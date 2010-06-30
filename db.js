@@ -2,9 +2,11 @@ var db = Titanium.Database.open('db1');
 db.execute('create table if not exists expenses (id integer primary key autoincrement, amount real, created_at datetime default CURRENT_TIMESTAMP, category_id integer)');
 db.execute('create table if not exists categories (id integer primary key autoincrement, name text)');
 
+//db.execute('delete from categories');
+//db.execute('delete from expenses');
+
 function add_category(name) {
 	db.execute('insert into categories (name) values(?)', name);
-	//custom event to notify views to refresh?
 }
 
 function add_expense(category_name, amount) {
@@ -12,6 +14,7 @@ function add_expense(category_name, amount) {
 	category_id = rows.fieldByName('id');
 	rows.close();
 	db.execute('insert into expenses (amount, category_id) values(?,?)', amount, category_id);
+	return '$' + amount.toFixed(2) + ' ' + category_name + ' today';
 }
 
 function categories_table_array() {
@@ -38,12 +41,19 @@ function expenses_table_array_by_time(time_period) {
 	var expenses = [];
 	switch (time_period) {
 		case 'today':
-			rows = db.execute("select * from expenses where created_at > date('now')");
+			rows = db.execute("select * from expenses where created_at > date('now', 'localtime') order by created_at DESC");
 			//change this
 			if (rows) {
 				while (rows.isValidRow()) {
-					var item =  {title:rows.fieldByName('name') + ': $' + rows.fieldByName('amount') };
-					categories.push(item);
+					category_row = db.execute("select name from categories where id=?", rows.fieldByName('category_id'));
+					category = category_row.fieldByName('name');
+					category_row.close();
+					created = rows.fieldByName('created_at');
+					year = created.match(/\d\d\d\d/);
+					the_date = created.match(/-(\d\d-\d\d)/)[1].replace(/-/, '/').replace(/^0/, '');
+					amount = (Number(rows.fieldByName('amount'))).toFixed(2);
+					item =  {title:the_date + '\t' + '$' + amount + '\t\t' + category};
+					expenses.push(item);
 					rows.next();
 				}
 			}
@@ -51,13 +61,42 @@ function expenses_table_array_by_time(time_period) {
 			return expenses;
 		break;
 		case 'this week':
-
+			rows = db.execute("select * from expenses where created_at > date('now', 'localtime', '-7 days') order by created_at DESC");
+			//change this
+			if (rows) {
+				while (rows.isValidRow()) {
+					category_row = db.execute("select name from categories where id=?", rows.fieldByName('category_id'));
+					category = category_row.fieldByName('name');
+					category_row.close();
+					created = rows.fieldByName('created_at');
+					the_date = created.match(/-(\d\d-\d\d)/)[1].replace(/-/, '/').replace(/^0/, '');
+					amount = (Number(rows.fieldByName('amount'))).toFixed(2);
+					item =  {title:the_date + '\t' + '$' + amount + '\t\t' + category};
+					expenses.push(item);
+					rows.next();
+				}
+			}
+			rows.close();
+			return expenses;
 		break;
 		case 'this month':
-
-		break;
-		case 'this year':
-
+			rows = db.execute("select * from expenses where created_at > date('now', 'localtime', 'start of month') order by created_at DESC");
+			//change this
+			if (rows) {
+				while (rows.isValidRow()) {
+					category_row = db.execute("select name from categories where id=?", rows.fieldByName('category_id'));
+					category = category_row.fieldByName('name');
+					category_row.close();
+					created = rows.fieldByName('created_at');
+					the_date = created.match(/-(\d\d-\d\d)/)[1].replace(/-/, '/').replace(/^0/, '');
+					amount = (Number(rows.fieldByName('amount'))).toFixed(2);
+					item =  {title:the_date + '\t' + '$' + amount + '\t\t' + category};
+					expenses.push(item);
+					rows.next();
+				}
+			}
+			rows.close();
+			return expenses;
 		break;
 	}
 }

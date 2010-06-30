@@ -20,7 +20,8 @@ success_alert.addEventListener('click', function(){
 
 submit_button.addEventListener('click', function() {
 	category = win.categoryName;
-	add_expense(category, (Number(amount_input.value).toFixed(2)));
+	var new_expense_string = add_expense(category, (Number(amount_input.value)));
+	Ti.App.fireEvent('expense_added', {expense:new_expense_string});
 	success_alert.show();
 });
 

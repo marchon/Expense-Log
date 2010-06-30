@@ -12,46 +12,51 @@ Ti.include('db.js');
 // create base UI tab and root window
 //
 var all_categories_window = Ti.UI.createWindow({
-	title:'Categories',
 	font:{fontSize:18},
 	top:40,
 	backgroundColor:'#000',
 	url: 'all_categories_window.js'
 });
 
+var expenses_window = Ti.UI.createWindow({
+	url: 'expenses_window.js'
+});
 
 
+var expenses_window_week = Ti.UI.createWindow({
+	url: 'expenses_window_week.js'
+});
+
+
+var expenses_window_month = Ti.UI.createWindow({
+	url: 'expenses_window_month.js'
+});
+
+
+
+
+
+//Tabs
 var tab1 = Titanium.UI.createTab({
-    icon:'KS_nav_views.png',
-    title:'Tab 1',
+    title:'Main',
     window:all_categories_window
 });
 
-
-
-
-
-
-var win2 = Titanium.UI.createWindow({
-    title:'Tab 2',
-    backgroundColor:'#000'
-});
 var tab2 = Titanium.UI.createTab({
-    icon:'KS_nav_ui.png',
-    title:'Tab 2',
-    window:win2
+    title:'Today',
+    window:expenses_window
 });
 
-var label2 = Titanium.UI.createLabel({
-	color:'#999',
-	text:'I am Window 2',
-	font:{fontSize:20,fontFamily:'Helvetica Neue'},
-	textAlign:'center',
-	width:'auto'
+var tab3 = Titanium.UI.createTab({
+    title:'Week',
+    window:expenses_window_week
 });
 
-win2.add(label2);
 
+var tab4 = Titanium.UI.createTab({
+    title:'Month',
+    window:expenses_window_month
+});
 
 
 
@@ -60,7 +65,8 @@ win2.add(label2);
 //
 tabGroup.addTab(tab1);
 tabGroup.addTab(tab2);
-
+tabGroup.addTab(tab3);
+tabGroup.addTab(tab4);
 
 // open tab group
 tabGroup.open();
