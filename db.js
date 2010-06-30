@@ -14,28 +14,48 @@ function add_expense(category_name, amount) {
 	category_id = rows.fieldByName('id');
 	rows.close();
 	db.execute('insert into expenses (amount, category_id) values(?,?)', amount, category_id);
-	return '$' + amount.toFixed(2) + ' ' + category_name + ' today';
+	return {the_amount:amount.toFixed(2), category:category_name};
 }
 
 function categories_table_array() {
 	rows = db.execute('select * from categories');
-	Ti.API.info('fetched result set');
 	var categories = [];
 	if (rows) {
-		Ti.API.info('entered if statement');
 		while (rows.isValidRow()) {
-			Ti.API.info('entered while loop');
 			var item =  {title:rows.fieldByName('name')};
-			Ti.API.info('created an object with title: ' + item.title);
 			categories.push(item);
-			Ti.API.info('pushed item into categories array');
 			rows.next();
 		}
 	}
-	Ti.API.info('about to return categories array of length: ' + categories.length);
 	rows.close();
 	return categories;
 }
+
+function count_and_sum_by_time(time_period) {
+	var results = {};
+	switch (time_period) {
+		case 'today':
+			rows = db.execute("select sum(amount), count(amount) from expenses where created_at > date('now', 'localtime') order by created_at DESC");
+			results.sum = rows.field(0);
+			results.count = rows.field(1);
+			rows.close();
+		break;
+		case 'this week':
+			rows = db.execute("select sum(amount), count(amount) from expenses where created_at > date('now', 'localtime', '-7 days') order by created_at DESC");
+			results.sum = rows.field(0);
+			results.count = rows.field(1);
+			rows.close();
+		break;
+		case 'this month':
+			rows = db.execute("select sum(amount), count(amount) from expenses where created_at > date('now', 'localtime', 'start of month') order by created_at DESC");
+			results.sum = rows.field(0);
+			results.count = rows.field(1);
+			rows.close();
+		break;
+	}
+	return results;
+}
+
 
 function expenses_table_array_by_time(time_period) {
 	var expenses = [];

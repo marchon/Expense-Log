@@ -35,7 +35,6 @@ var expenses_window_month = Ti.UI.createWindow({
 
 
 
-
 //Tabs
 var tab1 = Titanium.UI.createTab({
     title:'Main',
