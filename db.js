@@ -1,5 +1,5 @@
 var db = Titanium.Database.open('db1');
-db.execute("create table if not exists expenses (id integer primary key autoincrement, amount real, created_at datetime default date('now', 'localtime'), category_id integer)");
+db.execute("create table if not exists expenses (id integer primary key autoincrement, amount real, created_at datetime default datetime('now', 'localtime'), category_id integer)");
 db.execute('create table if not exists categories (id integer primary key autoincrement, name text)');
 
 //db.execute('delete from categories');
