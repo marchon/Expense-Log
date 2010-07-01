@@ -14,16 +14,16 @@ var input = Ti.UI.createTextField({
 
 var add_button = Ti.UI.createButton({
 	title:'Add',
-	width:100,
-	bottom:100,
-	left:40
+	width:120,
+	bottom:20,
+	left:50
 });
 
 var cancel_button = Ti.UI.createButton({
 	title:'Cancel',
-	width:100,
-	bottom:100,
-	right:40
+	width:120,
+	bottom:20,
+	right:50
 });
 
 var success_alert = Ti.UI.createAlertDialog({
@@ -37,8 +37,8 @@ success_alert.addEventListener('click', function(){
 
 add_button.addEventListener('click', function(){
 	add_category(input.value);
+	Ti.App.fireEvent('category_added', {category:input.value}); //I think this works better putting it before the alert
 	success_alert.show();
-	Ti.App.fireEvent('category_added', {category:input.value});
 });
 
 cancel_button.addEventListener('click', function(){
