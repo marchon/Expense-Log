@@ -6,8 +6,8 @@ var label2 = Ti.UI.createLabel({text:'Amount: ', top:50});
 
 var amount_input = Ti.UI.createTextField({top:100, width:200});
 
-var submit_button = Ti.UI.createButton({title:'Submit', width:120, left:50, bottom:20});
-var cancel_button = Ti.UI.createButton({title:'Cancel', width:120, right:50, bottom:20});
+var submit_button = Ti.UI.createButton({title:'Submit', width:120, left:40, bottom:20});
+var cancel_button = Ti.UI.createButton({title:'Cancel', width:120, right:40, bottom:20});
 
 var success_alert = Ti.UI.createAlertDialog({
 	message:'Saved Successfully',

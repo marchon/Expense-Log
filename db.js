@@ -36,21 +36,39 @@ function count_and_sum_by_time(time_period) {
 	switch (time_period) {
 		case 'today':
 			rows = db.execute("select sum(amount), count(amount) from expenses where created_at > date('now', 'localtime') order by created_at DESC");
-			results.sum = rows.field(0);
-			results.count = rows.field(1);
-			rows.close();
+			if (rows) {
+				results.sum = rows.field(0);
+				results.count = rows.field(1);
+				rows.close();
+			} else {
+				results.sum = 0;
+				results.count = 0;
+			}
+
 		break;
 		case 'this week':
 			rows = db.execute("select sum(amount), count(amount) from expenses where created_at > date('now', 'localtime', '-7 days') order by created_at DESC");
-			results.sum = rows.field(0);
-			results.count = rows.field(1);
-			rows.close();
+			if (rows) {
+				results.sum = rows.field(0);
+				results.count = rows.field(1);
+				rows.close();
+			} else {
+				results.sum = 0;
+				results.count = 0;
+			}
+
 		break;
 		case 'this month':
 			rows = db.execute("select sum(amount), count(amount) from expenses where created_at > date('now', 'localtime', 'start of month') order by created_at DESC");
-			results.sum = rows.field(0);
-			results.count = rows.field(1);
-			rows.close();
+			if (rows) {
+				results.sum = rows.field(0);
+				results.count = rows.field(1);
+				rows.close();
+			} else {
+				results.sum = 0;
+				results.count = 0;
+			}
+
 		break;
 	}
 	return results;

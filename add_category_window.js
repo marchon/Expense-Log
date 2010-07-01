@@ -16,14 +16,14 @@ var add_button = Ti.UI.createButton({
 	title:'Add',
 	width:120,
 	bottom:20,
-	left:50
+	left:40
 });
 
 var cancel_button = Ti.UI.createButton({
 	title:'Cancel',
 	width:120,
 	bottom:20,
-	right:50
+	right:40
 });
 
 var success_alert = Ti.UI.createAlertDialog({
