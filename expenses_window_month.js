@@ -20,7 +20,7 @@ Ti.App.addEventListener('expense_added', function(e){
 	new_summary = count_and_sum_by_time('this month');
 	summary_row_label.text = new_summary.count + ' purchases totalling $' + new_summary.sum.toFixed();
 	new_row = Ti.UI.createTableViewRow({title:'$' + e.expense.the_amount + '\t' + e.expense.category});
-	expenses_table.insertRowBefore(1, new_row);
+	expenses_table.insertRowAfter(0, new_row);
 });
 
 win.add(expenses_table);

@@ -2,8 +2,6 @@ var db = Titanium.Database.open('db1');
 db.execute("create table if not exists expenses (id integer primary key autoincrement, amount real, created_at datetime default datetime('now', 'localtime'), category_id integer)");
 db.execute('create table if not exists categories (id integer primary key autoincrement, name text)');
 
-//db.execute('delete from categories');
-//db.execute('delete from expenses');
 
 function add_category(name) {
 	db.execute('insert into categories (name) values(?)', name);
@@ -94,8 +92,8 @@ function expenses_table_array_by_time(time_period) {
 					expenses.push(item);
 					rows.next();
 				}
+				rows.close();
 			}
-			rows.close();
 			return expenses;
 		break;
 		case 'this week':
@@ -113,8 +111,8 @@ function expenses_table_array_by_time(time_period) {
 					expenses.push(item);
 					rows.next();
 				}
+				rows.close();
 			}
-			rows.close();
 			return expenses;
 		break;
 		case 'this month':
@@ -132,8 +130,8 @@ function expenses_table_array_by_time(time_period) {
 					expenses.push(item);
 					rows.next();
 				}
+				rows.close();
 			}
-			rows.close();
 			return expenses;
 		break;
 	}
