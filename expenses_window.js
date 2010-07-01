@@ -18,7 +18,7 @@ expenses_today_table.insertRowBefore(0, summary_row);
 
 Ti.App.addEventListener('expense_added', function(e){
 	new_summary = count_and_sum_by_time('today');
-	summary_row_label.text = new_summary.count + ' purchases totalling $' + new_summary.sum;
+	summary_row_label.text = new_summary.count + ' purchases totalling $' + new_summary.sum.toFixed(2);
 	new_row = Ti.UI.createTableViewRow({title:'$' + e.expense.the_amount + '\t' + e.expense.category});
 	expenses_today_table.insertRowBefore(1, new_row);
 });
