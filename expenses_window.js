@@ -8,7 +8,7 @@ var expenses_today_table = Ti.UI.createTableView({data:expenses_table_array_by_t
 summary = count_and_sum_by_time('today');
 var summary_row_view = Ti.UI.createView();
 var summary_row_label = Ti.UI.createLabel({
-	text: summary.count + ' purchases totalling $' + summary.sum
+	text: summary.count + ' purchases totalling $' + (Number(summary.sum)).toFixed(2)
 });
 var summary_row = Ti.UI.createTableViewRow();
 summary_row_view.add(summary_row_label);

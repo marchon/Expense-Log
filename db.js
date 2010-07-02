@@ -1,5 +1,5 @@
 var db = Titanium.Database.open('db1');
-db.execute("create table if not exists expenses (id integer primary key autoincrement, amount real, created_at datetime default datetime('now', 'localtime'), category_id integer)");
+db.execute("create table if not exists expenses (id integer primary key autoincrement, amount real, created_at datetime, category_id integer)");
 db.execute('create table if not exists categories (id integer primary key autoincrement, name text)');
 
 
@@ -11,7 +11,7 @@ function add_expense(category_name, amount) {
 	rows = db.execute('select id from categories where name=?', category_name);
 	category_id = rows.fieldByName('id');
 	rows.close();
-	db.execute('insert into expenses (amount, category_id) values(?,?)', amount, category_id);
+	db.execute("insert into expenses (amount, category_id, created_at) values(?,?, datetime('now', 'localtime'))", amount, category_id);
 	return {the_amount:amount.toFixed(2), category:category_name};
 }
 
