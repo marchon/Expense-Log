@@ -29,6 +29,53 @@ function categories_table_array() {
 	return categories;
 }
 
+
+function category_count_and_sum_by_time(time_period, category_name) {
+	var results = {};
+	category_result = db.execute('select id from categories where name=?', category_name);
+	category = category_result.field(0);
+	category_result.close();
+	switch (time_period) {
+		case 'today':
+			rows = db.execute("select sum(amount), count(amount) from expenses where category_id = ? AND created_at > date('now', 'localtime') order by created_at DESC", category);
+			if (rows) {
+				results.sum = rows.field(0);
+				results.count = rows.field(1);
+				rows.close();
+			} else {
+				results.sum = 0;
+				results.count = 0;
+			}
+
+		break;
+		case 'this week':
+			rows = db.execute("select sum(amount), count(amount) from expenses where category_id = ? AND created_at > date('now', 'localtime', '-7 days') order by created_at DESC", category);
+			if (rows) {
+				results.sum = rows.field(0);
+				results.count = rows.field(1);
+				rows.close();
+			} else {
+				results.sum = 0;
+				results.count = 0;
+			}
+
+		break;
+		case 'this month':
+			rows = db.execute("select sum(amount), count(amount) from expenses where category_id = ? AND created_at > date('now', 'localtime', 'start of month') order by created_at DESC", category);
+			if (rows) {
+				results.sum = rows.field(0);
+				results.count = rows.field(1);
+				rows.close();
+			} else {
+				results.sum = 0;
+				results.count = 0;
+			}
+
+		break;
+	}
+	return results;
+}
+
 function count_and_sum_by_time(time_period) {
 	var results = {};
 	switch (time_period) {

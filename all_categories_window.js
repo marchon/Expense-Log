@@ -12,8 +12,33 @@ first_row.add(first_row_view);
 
 category_table.insertRowBefore(0, first_row);
 
+popup = Ti.UI.createAlertDialog({
+	title: 'Choose an Action',
+	buttonNames:['Add Expense', 'Stats', 'Cancel'],
+	cancel:2
+});
+
+popup.addEventListener('click', function(e){
+	if (e.index == 0) {
+		Ti.UI.createWindow({
+			title:'Add expense',
+			url:'add_expense_window.js',
+			modal:true,
+			categoryName: popup.category_name
+		}).open();
+	}
+	if (e.index == 1) {
+		Ti.API.info('Stats clicked');
+		Ti.UI.createWindow({
+			title: popup.category_name,
+			url:'single_category_window.js',
+			modal:true,
+			categoryName: popup.category_name
+		}).open();
+	}
+});
+
 category_table.addEventListener('click', function(e) {
-	Ti.API.info(JSON.stringify(e));
 	if (e.index == 0) {
 		Ti.UI.createWindow({
 			title:'New Category',
@@ -23,12 +48,8 @@ category_table.addEventListener('click', function(e) {
 		}).open();
 	} else {
 		var category_name = e.row.title;
-		Ti.UI.createWindow({
-			title:'Add expense',
-			url:'add_expense_window.js',
-			modal:true,
-			categoryName:category_name
-		}).open();
+		popup.category_name = category_name
+		popup.show();
 	}
 });
 
