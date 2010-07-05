@@ -7,9 +7,9 @@ month = category_count_and_sum_by_time('this month', win.categoryName);
 
 view = Ti.UI.createView();
 
-today_string =  'Today: ' + today.count + ' purchases totalling $' + (Number(today.sum)).toFixed(2) + '\n';
-week_string =  'Last Week: ' + week.count + ' purchases totalling $' + (Number(week.sum)).toFixed(2) + '\n';
-month_string =  'This Month: ' + month.count + ' purchases totalling $' + (Number(month.sum)).toFixed(2) + '\n';
+today_string =  'Today: \t\t' + today.count + ' purchases, $' + (Number(today.sum)).toFixed(2) + '\n';
+week_string =  'Last Week:\t ' + week.count + ' purchases, $' + (Number(week.sum)).toFixed(2) + '\n';
+month_string =  'This Month:\t ' + month.count + ' purchases, $' + (Number(month.sum)).toFixed(2) + '\n';
 
 
 label = Ti.UI.createLabel({
